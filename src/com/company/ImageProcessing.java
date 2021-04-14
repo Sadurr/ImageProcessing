@@ -9,9 +9,6 @@ import java.io.IOException;
 
 public class ImageProcessing {
 
-    // Client client = new Client();
-   // private int pixels[] = new int [3];
-
     BufferedImage image;
     WritableRaster raster;
 

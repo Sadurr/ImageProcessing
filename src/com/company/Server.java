@@ -1,74 +1,45 @@
 package com.company;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class Server {
-
-    //add multi-threading
-
-    JFrame frame;
-    JLabel textLabel;
 
     ServerSocket serverSocket;
     Socket socket;
 
-    InputStream inputStream;
-    BufferedInputStream bufferedInputStream;
-    BufferedImage bufferedImage;
-
-    JLabel imageLabel;
-    ImageProcessing imageProcessing;
-
-    OutputStream outputStream;
-    BufferedOutputStream bufferedOutputStream;
-    Image image;
-    BufferedImage sendBufferedImage;
-    Graphics graphics;
-
     public Server() throws IOException {
-        makeFrame();
         connect();
-        process();
-        //send();
-    }
-
-    public void makeFrame() {
-
-        frame = new JFrame("SERVER");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 500);
-
-        textLabel = new JLabel("Waiting...");
-        frame.add(textLabel, BorderLayout.SOUTH);
-        frame.setVisible(true);
     }
 
     public void connect() throws IOException {
 
         serverSocket = new ServerSocket(1234);
-        socket = serverSocket.accept();
+        serverSocket.setReuseAddress(true);
 
-        inputStream = socket.getInputStream();
-        bufferedInputStream = new BufferedInputStream(inputStream);
-        bufferedImage = ImageIO.read(bufferedInputStream);
-        bufferedInputStream.close();
-        socket.close();
+        try {
 
-        JLabel imageLabel = new JLabel(new ImageIcon(bufferedImage));
-        textLabel.setText("Image recieved");
-        frame.add(imageLabel, BorderLayout.CENTER);
-    }
+            while (true) {
 
-    public void process()  {
-        ImageProcessing x = new ImageProcessing(bufferedImage);
-        x.greenSaturation();
+                socket = serverSocket.accept();
+                System.out.println(serverSocket.getInetAddress().getHostAddress() + " connected");
+                ClientHandler client = new ClientHandler(socket);
+
+                new Thread(client).start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (serverSocket!=null) {
+                try {
+                    serverSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 //    public void send() throws IOException {
