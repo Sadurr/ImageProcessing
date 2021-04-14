@@ -1,7 +1,6 @@
 package com.company;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
@@ -61,20 +60,4 @@ public class ImageProcessing {
             }
         }
     }
-
-//    public void toGrey() {
-//        double arr[] = new double[3];
-//        for(int i=0; i < width; i++) {
-//            for(int j=0; j < height; j++) {
-//                raster.getPixel(i, j, pixels);
-//                arr[0] = 0.299*pixels[0]+0.587*pixels[1]+0.114*pixels[2];
-//                arr[1] = 0.299*pixels[0]+0.587*pixels[1]+0.114*pixels[2];
-//                arr[2] = 0.299*pixels[0]+0.587*pixels[1]+0.114*pixels[2];
-//
-//                raster.setPixel(i, j, arr);
-//            }
-//        }
-//    }
-
-
 }
